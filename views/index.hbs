@@ -1,7 +1,45 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
+
 <form>
-    Add a todo:<input type="text" name="imputfield"><br>
+    Add a todo:<input type="text" name="inputfield"><br>
     <input type="submit" value="submit1">
 </form>
-<ul id="list"></ul>
+<ul id="listSection">
+
+</ul>
+
+<script>
+    const inputData = document.getElementById("inputField");
+    fetch("http://localhost:3000/todos/viewAll").then(data => {
+
+        data.json().then(function (data) {
+            console.log(data);
+            data.todos.forEach(todos => { createNewList(todos) })
+        });
+
+    });
+
+    function createNewList(data) {
+        console.log(data);
+        var list = document.getElementById("listSection");
+        var newlist = document.createElement("li");
+        newlist.innerText = `${data.title} ${checkStatus(data)}`;
+        list.appendChild(newlist)
+        document.body.appendChild(list);
+
+    }
+
+    function checkStatus(data) {
+        //var object = JSON.stringify(data.complete)
+        if (data.complete === false) {
+            return "pending";
+        }
+        if (data.complete === true) {
+            return "complete";
+        }
+    }
+
+
+
+</script>
